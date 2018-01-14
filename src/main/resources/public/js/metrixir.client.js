@@ -3,6 +3,7 @@ var METRIXIR = METRIXIR || {};
 METRIXIR.server = Object.assign({}, {
     protocol: 'http',
     host: '',
+    tag: '',
     api: {
         metrics: {
             method: 'POST',
@@ -23,6 +24,7 @@ window.onload = function () {
         var postData = Object.assign({
             name: inputName,
             event: eventName,
+            hostTag: config.tag,
             clientTime: Date.now()
         }, page);
 
@@ -58,4 +60,16 @@ window.onload = function () {
         }
     }
 
+    var forms = document.getElementsByTagName('form');
+
+    for (var i = 0; i < elements.length; i++) {
+        var form = forms[i];
+
+        form.onsubmit = function () {
+            postEventLog('form', 'submit', METRIXIR.server);
+
+            return true;
+        }
+    }
+    postEventLog('form', 'render', METRIXIR.server);
 };
